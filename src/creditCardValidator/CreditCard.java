@@ -14,6 +14,7 @@ public class CreditCard {
 
     public String checkCardType(String cardNumber){
         String[] cardNumbers = cardNumber.split("");
+
         if (Objects.equals(cardNumbers[0], "4")) {
             return "Visa Cards";
         }
