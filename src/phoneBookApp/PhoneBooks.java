@@ -17,16 +17,16 @@ public class PhoneBooks{
                 return phoneBook;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Contact not found");
     }
     public void deletePhonebook(String input){
         PhoneBook phoneBook = findPhoneBook(input);
         phoneBooks.remove(phoneBook);
     }
-    public void login(String email, String password){
+    public PhoneBook login(String email, String password){
         PhoneBook loggedIn = findPhoneBook(email);
         if (loggedIn.getPassword().equals(password)){
-            return;
+            return loggedIn;
         }
         throw new IllegalArgumentException("Invalid Login Credentials");
     }

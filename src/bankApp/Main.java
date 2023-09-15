@@ -7,10 +7,9 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static final Bank opay = new Bank();
-    //private static final Scanner input = new Scanner(System.in);
-    //private static final Scanner KeyboardInputCollector = new Scanner(System.in);
+
     public static void main(String[] args) {
-        gotoMainMenu();
+        startWith();
     }
 
     public static void gotoMainMenu(){
@@ -24,8 +23,9 @@ public class Main {
                 3: Withdraw
                 4: Transfer
                 5: Check Balance
-                6: Delete Account
-                7: Exit
+                6: search account
+                7: Delete Account
+                0: Exit
                 __________________________
                 __________________________
                 """;
@@ -36,24 +36,46 @@ public class Main {
             case '3' -> withdraw();
             case '4' -> transfer();
             case '5' -> balance();
-            case '6' -> deleteAccount();
-            case '7' -> exit();
+            case '6' -> searchAccount();
+            case '7' -> deleteAccount();
+            case '0' -> exit();
             default -> gotoMainMenu();
+        }
+    }
+    public static  void startWith(){
+        String menu= """
+                NOTICE! NOTICE! NOTICE!
+                    This is an unfinished Bank app, handle with care and
+                    PLEASE dont break my code.
+                    Thanks.
+                1: StartApp""";
+        String userInput = input(menu);
+        switch (userInput.charAt(0)) {
+            case '1' ->gotoMainMenu();
+            default -> startWith();
         }
     }
 
     private static void createAccount(){
         String firstName = input("Enter First Name: ");
         String lastName = input("Enter Last Name: ");
-        String phoneNumber = input("Enter your Phone Number: ");
+        String phoneNumber;
+        while (true){
+            phoneNumber = input("Phone Number: ");
+            if (isValidNigerianPhoneNumber(phoneNumber)){
+                break;
+            }else display("Incorrect Number");
+
+        }
         String pin = input("Set your Pin: ");
         display("Account creation successful");
         try{
-            opay.createAccount(firstName,lastName,phoneNumber,pin);
+            display( "" + opay.createAccount(firstName,lastName,phoneNumber,pin));
         } catch (IllegalArgumentException error){
             display(error.getMessage());
+            createAccount();
         }
-        System.out.println(opay.createAccount(firstName,lastName,phoneNumber,pin));
+
 
         gotoMainMenu();
     }
@@ -81,7 +103,7 @@ public class Main {
             display("Withdrawal successful");
         } catch(Exception exception){
             display(exception.getMessage());
-            withdraw();
+
         }
 
         gotoMainMenu();
@@ -93,13 +115,13 @@ public class Main {
         String receiversAccountNumber = input("receiver's Account Number: ");
         String pin = input("Enter your pin: ");
         try {
-            opay.intraBankTransfer(amount,sendersAccount,receiversAccountNumber,pin);
+            display(String.valueOf(opay.intraBankTransfer(amount,sendersAccount,receiversAccountNumber,pin)));
+            display("Transfer Successful");
         } catch (IllegalArgumentException error) {
             display(error.getMessage());
-            transfer();
         }
-        display("Transfer Successful");
-        display("Your new Account Balance is " + opay.checkBalance(sendersAccount, pin));
+
+
         gotoMainMenu();
 
     }
@@ -114,14 +136,23 @@ public class Main {
        catch (Exception exception){
 
            display(exception.getMessage());
-           balance();
        }
         gotoMainMenu();
 
     }
     private static void deleteAccount(){
         String accountNumber = input("Enter account number: ");
-        opay.deleteAccount(accountNumber);
+        try{
+            opay.deleteAccount(accountNumber);
+            display("Account deleted successfully");
+        }catch (Exception error){
+            display(error.getMessage());
+        }
+        gotoMainMenu();
+    }
+    private static void searchAccount(){
+        //String accountNumber = input("Enter Account Number: ");
+        display(opay.findAllAccount().toString());
         gotoMainMenu();
     }
     public static String input(String prompt) {

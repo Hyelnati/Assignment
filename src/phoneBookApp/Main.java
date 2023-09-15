@@ -125,7 +125,7 @@ public class Main {
         String password = input("input your password: ");
         PhoneBook phoneBook = ourPhone.createPhoneBook(firstName,lastName,emailAddress,phoneNumber,password);
         display(String.valueOf(phoneBook));
-        goToMainMenu();
+        startMenu();
 
     }
     public static void login(){
@@ -133,12 +133,12 @@ public class Main {
         String password = input("Enter Your Password: ");
         try {
            ourPhone.login(email, password);
-           goToMainMenu();
+           display("login successful");
         }catch (IllegalArgumentException error){
             display(error.getMessage());
             login();
         }
-        startMenu();
+        goToMainMenu();
     }
 
     private static String input(String prompt) {

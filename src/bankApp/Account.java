@@ -74,13 +74,15 @@ public class Account {
     public String getPin(){
         return pin;
     }
+
+
     @Override
     public String toString(){
         return String.format("""
                 =========================
                 Account Name: %s%n
                 Account Number: %S%n
-                Current Balance: #%S%n
+                Current Balance: %S%n
                 """, accountName,accountNumber,balance);
 
     }
